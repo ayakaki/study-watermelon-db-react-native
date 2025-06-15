@@ -4,6 +4,7 @@ import App from './App';
 import { name as appName } from './app.json';
 
 import Database from '@nozbe/watermelondb/Database';
+import Comment from './model/Comment';
 import migrations from './model/migrations';
 import Post from './model/Post';
 import { mySchema } from './model/schema';
@@ -22,6 +23,7 @@ export const database = new Database({
   adapter,
   modelClasses: [
     Post,
+    Comment
   ],
 })
 AppRegistry.registerComponent(appName, () => App);
