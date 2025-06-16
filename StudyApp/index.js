@@ -12,7 +12,7 @@ import { mySchema } from './model/schema';
 const adapter = new SQLiteAdapter({
   schema: mySchema,
   migrations,
-  dbName: 'mydb',
+  dbName: 'study_wmdb',
   jsi: true, /* Platform.OS === 'ios' */
   onSetUpError: error => {
     console.error('WatermelonDB setup error:', error);
