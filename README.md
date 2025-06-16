@@ -1,12 +1,17 @@
 ##　About This Repository
-WatermelonDB の挙動を確認するリポジトリ
+WatermelonDB/Supabase の挙動を確認するリポジトリ
 
 ## コマンド一覧
-### アプリケーション起動
-npx react-native run-ios
+### React Native
+- `npx react-native run-ios`: アプリケーション起動
+- `npx react-native start --reset-cache`: キャッシュ削除
 
-### キャッシュ削除
-npx react-native start --reset-cache
+### Supabase
+- `supabase login`: アカウントにログイン
+- `supabase link`: プロジェクトに紐付け
+- `supabase init`: Supabase 利用のための初期化
+- `supabase migration new create_posts`: DDLファイル(.sql)の自動作成
+- `supabase db push`: Supabase への DDL ファイル適用
 
 ## データベース参照（DB Browser for SQLite）
 - DB Browser for SQLite を起動する
