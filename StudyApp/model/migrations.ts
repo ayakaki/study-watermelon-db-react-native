@@ -3,6 +3,26 @@ import { addColumns, schemaMigrations } from '@nozbe/watermelondb/Schema/migrati
 export default schemaMigrations({
   migrations: [
     {
+      toVersion: 3,
+      steps: [
+        addColumns({
+          table: 'comments',
+          columns: [
+            { name: 'created_at', type: 'number' },
+            { name: 'updated_at', type: 'number' },
+          ]
+        },
+        ),
+        addColumns({
+          table: 'posts',
+          columns: [
+            { name: 'created_at', type: 'number' },
+            { name: 'updated_at', type: 'number' },
+          ]
+        }),
+      ]
+    },
+    {
       toVersion: 2,
       steps: [
         addColumns({
@@ -12,5 +32,6 @@ export default schemaMigrations({
           ]
         }),
       ]
-    }]
+    }
+  ]
 })
