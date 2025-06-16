@@ -17,4 +17,5 @@ WatermelonDB/Supabase の挙動を確認するリポジトリ
 - DB Browser for SQLite を起動する
 - 以下のコマンドで .db ファイルを検索する（不可視ディレクトリ内に存在）
   - `find ~/Library/Developer/CoreSimulator/Devices -name "mydb.db"`
-- DB Browser for SQLite にドラッグ&ドロップ
+- 以下のコマンドで .db ファイルを開く
+  - `open /Users/~/mydb.db`
