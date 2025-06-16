@@ -6,4 +6,5 @@ export default class Comment extends Model {
 
   @field('body') body!: string;
   @field('post_id') postId!: string;
+  @field('is_favorite') isFavorite !: boolean
 }

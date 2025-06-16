@@ -1,8 +1,7 @@
-// model/schema.js
 import { appSchema, tableSchema } from '@nozbe/watermelondb'
 
 export const mySchema = appSchema({
-  version: 1,
+  version: 2,
   tables: [
     tableSchema({
       name: 'posts',
@@ -18,6 +17,7 @@ export const mySchema = appSchema({
       columns: [
         { name: 'body', type: 'string' },
         { name: 'post_id', type: 'string', isIndexed: true },
+        { name: 'is_favorite', type: 'boolean', isOptional: true }
       ]
     }),
   ]
