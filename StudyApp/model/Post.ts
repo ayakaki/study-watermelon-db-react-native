@@ -1,5 +1,5 @@
 import { Model, Relation } from '@nozbe/watermelondb';
-import { children, date, field, readonly, text } from '@nozbe/watermelondb/decorators';
+import { children, date, field, text } from '@nozbe/watermelondb/decorators';
 import Comment from './Comment';
 
 export default class Post extends Model {
@@ -22,8 +22,9 @@ export default class Post extends Model {
   @text('subtitle') subtitle !: string
   @text('body') body !: string
   @field('is_pinned') isPinned !: boolean
-  @readonly @date('created_at') createdAt !: Date
-  @readonly @date('updated_at') updatedAt !: Date
+  @date('created_at') createdAt !: Date
+  @date('updated_at') updatedAt !: Date
+  @field('user_id') userId!: string;
 
   @children('comments') comments!: Relation<Comment>;
 }
