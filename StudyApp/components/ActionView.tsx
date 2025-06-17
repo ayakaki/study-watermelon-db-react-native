@@ -1,6 +1,8 @@
+import { useAtomValue } from 'jotai';
 import React, { useState } from 'react';
 import { Button, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { database } from '..';
+import { sessionAtom } from '../atom/sessionAtom';
 import { supabase } from '../libs/supabase';
 import Comment from '../model/Comment';
 import Post from '../model/Post';
@@ -11,7 +13,10 @@ export function ActionView() {
     subtitle: '',
     body: '',
     isPinned: false,
+    userId: '',
   });
+
+  const session = useAtomValue(sessionAtom);
 
 
   const [posts, setPosts] = useState<Post[]>([]);
@@ -33,6 +38,9 @@ export function ActionView() {
           post.subtitle = postData.subtitle;
           post.body = postData.body;
           post.isPinned = postData.isPinned;
+          post.userId = session?.user.id || '';
+          post.createdAt = new Date();
+          post.updatedAt = new Date();
         });
       });
 
@@ -75,6 +83,10 @@ export function ActionView() {
         await database.get<Comment>('comments').create(comment => {
           comment.body = commentText;
           comment.postId = postId;
+          comment.isFavorite = false;
+          comment.userId = session?.user.id || '';
+          comment.createdAt = new Date();
+          comment.updatedAt = new Date();
         });
       });
       handleGetPosts(); // Refresh
