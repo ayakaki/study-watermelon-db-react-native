@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { Button, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { database } from '..';
+import { supabase } from '../libs/supabase';
 import Comment from '../model/Comment';
 import Post from '../model/Post';
 
-export function MyHome() {
+export function ActionView() {
   const [postData, setPostData] = useState({
     title: '',
     subtitle: '',
     body: '',
     isPinned: false,
   });
+
 
   const [posts, setPosts] = useState<Post[]>([]);
   const [commentsMap, setCommentsMap] = useState<Record<string, Comment[]>>({});
@@ -81,6 +83,15 @@ export function MyHome() {
     }
   };
 
+  const handleSignout = async () => {
+    try {
+      await supabase.auth.signOut();
+      console.log('Signed out successfully');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  }
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <TextInput style={styles.input} placeholder="PostTitle" value={postData.title} onChangeText={v => handleChange('title', v)} />
@@ -89,6 +100,7 @@ export function MyHome() {
       <Button title="登録" onPress={handleRegister} />
       <View style={styles.spacer} />
       <Button title="取得" onPress={handleGetPosts} />
+      <Button title="サインアウト" onPress={handleSignout} />
 
       <View style={styles.postListContainer}>
         {posts.map((post, index) => (
@@ -115,13 +127,13 @@ export function MyHome() {
     </ScrollView>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    marginTop: 50,
   },
   input: {
     width: '100%',
