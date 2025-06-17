@@ -1,13 +1,14 @@
-import { Session } from '@supabase/supabase-js';
-import { useEffect, useState } from 'react';
+import { useAtom } from 'jotai';
+import { useEffect } from 'react';
 import { Text, View } from 'react-native';
+import { sessionAtom } from './atom/sessionAtom';
 import Auth from './components/Auth';
 import { supabase } from './libs/supabase';
 import { HomeScreen } from './screens/HomeScreen';
 
 function App() {
 
-  const [session, setSession] = useState<Session | null>(null)
+  const [session, setSession] = useAtom(sessionAtom);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -16,7 +17,7 @@ function App() {
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
     })
-  }, [])
+  }, [session, setSession]);
 
   return (
     <View>
