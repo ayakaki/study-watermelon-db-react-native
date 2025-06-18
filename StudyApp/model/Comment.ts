@@ -10,5 +10,6 @@ export default class Comment extends Model {
   @date('created_at') createdAt !: Date
   @date('updated_at') updatedAt !: Date
   @field('user_id') userId!: string;
+  @field('last_modified') lastModified!: number
 
 }

@@ -3,19 +3,12 @@ import { addColumns, schemaMigrations } from '@nozbe/watermelondb/Schema/migrati
 export default schemaMigrations({
   migrations: [
     {
-      toVersion: 4,
+      toVersion: 2,
       steps: [
         addColumns({
           table: 'comments',
           columns: [
-            { name: 'user_id', type: 'string' },
-          ]
-        },
-        ),
-        addColumns({
-          table: 'posts',
-          columns: [
-            { name: 'user_id', type: 'string' },
+            { name: 'is_favorite', type: 'boolean', isOptional: false },
           ]
         }),
       ]
@@ -41,15 +34,26 @@ export default schemaMigrations({
       ]
     },
     {
-      toVersion: 2,
+      toVersion: 4,
+      steps: [],
+    },
+    {
+      toVersion: 5,
       steps: [
         addColumns({
           table: 'comments',
           columns: [
-            { name: 'is_favorite', type: 'boolean', isOptional: false },
+            { name: 'last_modified', type: 'number' },
+          ]
+        },
+        ),
+        addColumns({
+          table: 'posts',
+          columns: [
+            { name: 'last_modified', type: 'number' },
           ]
         }),
-      ]
-    }
+      ],
+    },
   ]
 })

@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb'
 
 export const mySchema = appSchema({
-  version: 4,
+  version: 5,
   tables: [
     tableSchema({
       name: 'posts',
@@ -12,7 +12,8 @@ export const mySchema = appSchema({
         { name: 'is_pinned', type: 'boolean' },
         { name: "created_at", type: 'number' },
         { name: "updated_at", type: 'number' },
-        { name: "user_id", type: 'string' }
+        { name: "user_id", type: 'string' },
+        { name: 'last_modified', type: 'number' }
       ]
     }),
     tableSchema({
@@ -23,7 +24,8 @@ export const mySchema = appSchema({
         { name: 'is_favorite', type: 'boolean', isOptional: true },
         { name: "created_at", type: 'number' },
         { name: "updated_at", type: 'number' },
-        { name: "user_id", type: 'string' }
+        { name: "user_id", type: 'string' },
+        { name: 'last_modified', type: 'number' }
       ]
     }),
   ]
