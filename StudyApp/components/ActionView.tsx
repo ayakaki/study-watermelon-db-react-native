@@ -19,7 +19,6 @@ export function ActionView() {
 
   const session = useAtomValue(sessionAtom);
 
-
   const [posts, setPosts] = useState<Post[]>([]);
   const [commentsMap, setCommentsMap] = useState<Record<string, Comment[]>>({});
   const [newComments, setNewComments] = useState<Record<string, string>>({});
@@ -44,10 +43,36 @@ export function ActionView() {
           post.updatedAt = new Date();
         });
       });
-
       console.log('Post registered:', postData);
     } catch (error) {
       console.error('Error registering post:', error);
+    }
+  };
+
+  const handleUpdatePost = async (post: Post) => {
+    try {
+      await database.write(async () => {
+        await post.update(p => {
+          p.title = postData.title;
+          p.subtitle = postData.subtitle;
+          p.body = postData.body;
+          p.updatedAt = new Date();
+        });
+      });
+      handleGetPosts();
+    } catch (error) {
+      console.error('Error updating post:', error);
+    }
+  };
+
+  const handleDeletePost = async (post: Post) => {
+    try {
+      await database.write(async () => {
+        await post.markAsDeleted();
+      });
+      handleGetPosts();
+    } catch (error) {
+      console.error('Error deleting post:', error);
     }
   };
 
@@ -57,7 +82,6 @@ export function ActionView() {
       setPosts(allPosts);
 
       const commentsMap: Record<string, Comment[]> = {};
-
       for (const post of allPosts) {
         const comments = await post.comments.fetch();
         commentsMap[post.id] = Array.isArray(comments) ? comments : [comments].filter(Boolean);
@@ -90,7 +114,7 @@ export function ActionView() {
           comment.updatedAt = new Date();
         });
       });
-      handleGetPosts(); // Refresh
+      handleGetPosts();
     } catch (error) {
       console.error('Error submitting comment:', error);
     }
@@ -124,6 +148,9 @@ export function ActionView() {
             <Text>{post.body}</Text>
             <Text>{post.isPinned ? '📌 ピン留め中' : ''}</Text>
 
+            <Button title="編集" onPress={() => handleUpdatePost(post)} />
+            <Button title="削除" onPress={() => handleDeletePost(post)} />
+
             <Text style={styles.commentHeader}>コメント</Text>
             {commentsMap[post.id]?.map(comment => (
               <Text key={comment.id} style={styles.commentText}>・{comment.body}</Text>
@@ -141,6 +168,7 @@ export function ActionView() {
     </ScrollView>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
