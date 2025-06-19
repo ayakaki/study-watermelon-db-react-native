@@ -1,0 +1,7 @@
+CREATE OR REPLACE FUNCTION set_last_modified()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.last_modified := EXTRACT(EPOCH FROM NOW()) * 1000;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;

@@ -6,6 +6,7 @@ import { sessionAtom } from '../atom/sessionAtom';
 import { supabase } from '../libs/supabase';
 import Comment from '../model/Comment';
 import Post from '../model/Post';
+import { SyncView } from './SyncView,';
 
 export function ActionView() {
   const [postData, setPostData] = useState({
@@ -106,6 +107,7 @@ export function ActionView() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <SyncView />
       <TextInput style={styles.input} placeholder="PostTitle" value={postData.title} onChangeText={v => handleChange('title', v)} />
       <TextInput style={styles.input} placeholder="Subtitle" value={postData.subtitle} onChangeText={v => handleChange('subtitle', v)} />
       <TextInput style={styles.input} placeholder="PostBody" value={postData.body} onChangeText={v => handleChange('body', v)} />
