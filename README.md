@@ -12,6 +12,7 @@ WatermelonDB/Supabase の挙動を確認するリポジトリ
 - `supabase init`: Supabase 利用のための初期化
 - `supabase migration new create_posts`: DDLファイル(.sql)の自動作成
 - `supabase db push`: Supabase への DDL ファイル適用
+- `supabase functions deploy push-changes`: Edge Functions へのデプロイ
 
 ## データベース参照（DB Browser for SQLite）
 - DB Browser for SQLite を起動する
