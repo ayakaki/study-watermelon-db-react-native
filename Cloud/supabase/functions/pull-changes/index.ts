@@ -5,14 +5,21 @@ serve(async (req) => {
   try {
     const { last_pulled_at } = await req.json()
 
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL')!,
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-    )
-
-    // JWTトークンからuserを取得
     const authHeader = req.headers.get('Authorization')
     const jwt = authHeader?.replace('Bearer ', '')
+
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_ANON_KEY')!,
+      {
+        global: {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        },
+      }
+    )
+
     const { data: { user }, error: authError } = await supabase.auth.getUser(jwt)
 
     if (authError || !user) {

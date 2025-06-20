@@ -5,17 +5,28 @@ serve(async (req) => {
   try {
     const { changes, last_pulled_at } = await req.json();
 
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL')!,
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-    );
-
     const authHeader = req.headers.get('Authorization');
     const jwt = authHeader?.replace('Bearer ', '');
+
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_ANON_KEY')!,
+      {
+        global: {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        },
+      }
+    );
+
     const {
       data: { user },
       error: authError
     } = await supabase.auth.getUser(jwt);
+
+    console.log('user:', user);
+
 
     if (authError || !user) throw new Error('認証ユーザーが取得できません');
     const user_id = user.id;
