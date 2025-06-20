@@ -20,3 +20,44 @@ WatermelonDB/Supabase の挙動を確認するリポジトリ
   - `find ~/Library/Developer/CoreSimulator/Devices -name "mydb.db"`
 - 以下のコマンドで .db ファイルを開く
   - `open /Users/~/mydb.db`
+
+## その他
+### Table 作成時に行うべき事項
+```
+-- ① 必要ならば既存のGRANTを全て取り消す（安全のため）
+REVOKE ALL ON TABLE posts FROM PUBLIC;
+REVOKE ALL ON TABLE posts FROM anon;
+REVOKE ALL ON TABLE posts FROM authenticated;
+
+-- ② 必要なロールに対してGRANT（最低限の権限を明示）
+GRANT SELECT, INSERT, UPDATE, DELETE ON posts TO authenticated;
+
+-- ③ RLS（行レベルセキュリティ）を有効化
+ALTER TABLE posts ENABLE ROW LEVEL SECURITY;
+
+-- ④ 認証済ユーザーが自分のデータのみ操作できるようにPOLICY作成
+
+-- SELECT
+CREATE POLICY "Authenticated user can read own posts"
+  ON posts FOR SELECT
+  TO authenticated
+  USING (auth.uid() = user_id);
+
+-- INSERT
+CREATE POLICY "Authenticated user can insert own posts"
+  ON posts FOR INSERT
+  TO authenticated
+  WITH CHECK (auth.uid() = user_id);
+
+-- UPDATE
+CREATE POLICY "Authenticated user can update own posts"
+  ON posts FOR UPDATE
+  TO authenticated
+  USING (auth.uid() = user_id);
+
+-- DELETE
+CREATE POLICY "Authenticated user can delete own posts"
+  ON posts FOR DELETE
+  TO authenticated
+  USING (auth.uid() = user_id);
+```
