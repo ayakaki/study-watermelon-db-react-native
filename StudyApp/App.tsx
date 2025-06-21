@@ -22,7 +22,7 @@ function App() {
   return (
     <View>
       {!session && <Auth />}
-      {session && <Text>{session.user.email}</Text>}
+      {session && <Text>{session.user.id}</Text>}
       {session && session.user && <HomeScreen />}
     </View>
   );
