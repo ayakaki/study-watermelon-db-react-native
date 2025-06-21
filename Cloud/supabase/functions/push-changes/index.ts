@@ -47,6 +47,7 @@ serve(async (req) => {
         cleaned.user_id = user_id;
         const { error } = await supabase.from(table).upsert(cleaned, { onConflict: 'id' });
         if (error) {
+          console.error(`[CREATE ERROR] ${table}:`, error, { row, user_id });
           throw new Error(`[CREATE ERROR] ${table}:`, error);
         }
       }
@@ -57,6 +58,7 @@ serve(async (req) => {
         cleaned.user_id = user_id;
         const { error } = await supabase.from(table).upsert(cleaned, { onConflict: 'id' });
         if (error) {
+          console.error(`[UPDATE EXCEPTION] ${table}:`, error, { row, user_id });
           throw new Error(`[UPDATE EXCEPTION] ${table}:`, error);
         }
       }
@@ -65,6 +67,7 @@ serve(async (req) => {
 
         const { error } = await supabase.from(table).delete().match({ id, user_id });
         if (error) {
+          console.error(`[DELETE ERROR] ${table}:`, error, { id, user_id });
           throw new Error(`[DELETE ERROR] ${table}:`, error);
         }
       }
