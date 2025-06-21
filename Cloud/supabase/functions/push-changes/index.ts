@@ -2,6 +2,7 @@ import { serve } from 'https://deno.land/std/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js';
 
 serve(async (req) => {
+
   try {
     const { changes, last_pulled_at } = await req.json();
 
@@ -41,33 +42,30 @@ serve(async (req) => {
       const deleted = changes[table]?.deleted ?? [];
 
       for (const row of created) {
-        try {
-          const cleaned = cleanRow(row);
-          cleaned.user_id = user_id;
-          const { error } = await supabase.from(table).upsert(cleaned, { onConflict: 'id' });
-          if (error) console.error(`[CREATE ERROR] ${table}:`, error, cleaned);
-        } catch (e) {
-          console.error(`[CREATE EXCEPTION] ${table}:`, e);
+
+        const cleaned = cleanRow(row);
+        cleaned.user_id = user_id;
+        const { error } = await supabase.from(table).upsert(cleaned, { onConflict: 'id' });
+        if (error) {
+          throw new Error(`[CREATE ERROR] ${table}:`, error);
         }
       }
 
       for (const row of updated) {
-        try {
-          const cleaned = cleanRow(row);
-          cleaned.user_id = user_id;
-          const { error } = await supabase.from(table).upsert(cleaned, { onConflict: 'id' });
-          if (error) console.error(`[UPDATE ERROR] ${table}:`, error, cleaned);
-        } catch (e) {
-          console.error(`[UPDATE EXCEPTION] ${table}:`, e);
+
+        const cleaned = cleanRow(row);
+        cleaned.user_id = user_id;
+        const { error } = await supabase.from(table).upsert(cleaned, { onConflict: 'id' });
+        if (error) {
+          throw new Error(`[UPDATE EXCEPTION] ${table}:`, error);
         }
       }
 
       for (const id of deleted) {
-        try {
-          const { error } = await supabase.from(table).delete().match({ id, user_id });
-          if (error) console.error(`[DELETE ERROR] ${table}:`, error, id);
-        } catch (e) {
-          console.error(`[DELETE EXCEPTION] ${table}:`, e);
+
+        const { error } = await supabase.from(table).delete().match({ id, user_id });
+        if (error) {
+          throw new Error(`[DELETE ERROR] ${table}:`, error);
         }
       }
     }
