@@ -6,7 +6,7 @@ import { sessionAtom } from '../atom/sessionAtom';
 import { supabase } from '../libs/supabase';
 import Comment from '../model/Comment';
 import Post from '../model/Post';
-import { SyncView } from './SyncView,';
+import { SyncView } from './SyncView';
 
 export function ActionView() {
   const [postData, setPostData] = useState({
